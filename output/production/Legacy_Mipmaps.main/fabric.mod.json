@@ -30,5 +30,10 @@
 	},
 	"suggests": {
 		"another-mod": "*"
+	},
+	"custom": {
+		"loom:injected_interfaces": {
+			"net/minecraft/class_1011": ["permdog99/legacy_mipmaps/getOpacityInterface"]
+		}
 	}
 }

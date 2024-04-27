@@ -1,5 +1,7 @@
 package permdog99.legacy_mipmaps.mixin;
 
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.texture.MipmapHelper;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.util.Util;
@@ -7,6 +9,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Unique;
 
+@Environment(EnvType.CLIENT)
 @Mixin(MipmapHelper.class)
 public class MipmapHelperMixin {
     @Unique
@@ -14,17 +17,15 @@ public class MipmapHelperMixin {
         for(int i = 0; i < list.length; ++i) {
             list[i] = (float)Math.pow((float)i / 255.0F, 2.2);
         }
-
     });
+
     /**
-     * @author
-     * Permdog99
-     * @reason
-     * For legacy console Mipmaps
+     * @author Permdog99
+     * @reason For legacy console Mipmaps
      */
+
     @Overwrite
     public static NativeImage[] getMipmapLevelsImages(NativeImage[] originals, int mipmap) {
-
         if (mipmap + 1 <= originals.length) {
             return originals;
         } else {
@@ -40,17 +41,15 @@ public class MipmapHelperMixin {
                     NativeImage nativeImage2 = new NativeImage(nativeImage.getWidth() >> 1, nativeImage.getHeight() >> 1, false);
                     int j = nativeImage2.getWidth();
                     int k = nativeImage2.getHeight();
-
                     for(int l = 0; l < j; ++l) {
                         for(int m = 0; m < k; ++m) {
-                            nativeImage2.setColor(l, m, blend(nativeImage.getColor(l * 2, m * 2), nativeImage.getColor(l * 2, m * 2), nativeImage.getColor(l * 2, m * 2), nativeImage.getColor(l * 2, m * 2), bl));
+                            int color = nativeImage.getColor(l * 2 + 1, m * 2 + 1);
+                            nativeImage2.setColor(l, m, color);
                         }
                     }
-
                     nativeImages[i] = nativeImage2;
                 }
             }
-
             return nativeImages;
         }
     }
@@ -63,7 +62,6 @@ public class MipmapHelperMixin {
                 }
             }
         }
-
         return false;
     }
     @Unique
@@ -77,28 +75,28 @@ public class MipmapHelperMixin {
                 f += getColorFraction(one >> 24);
                 g += getColorFraction(one >> 16);
                 h += getColorFraction(one >> 8);
-                i += getColorFraction(one);
+                i += getColorFraction(one >> 0);
             }
 
             if (two >> 24 != 0) {
                 f += getColorFraction(two >> 24);
                 g += getColorFraction(two >> 16);
                 h += getColorFraction(two >> 8);
-                i += getColorFraction(two);
+                i += getColorFraction(two >> 0);
             }
 
             if (three >> 24 != 0) {
                 f += getColorFraction(three >> 24);
                 g += getColorFraction(three >> 16);
                 h += getColorFraction(three >> 8);
-                i += getColorFraction(three);
+                i += getColorFraction(three >> 0);
             }
 
             if (four >> 24 != 0) {
                 f += getColorFraction(four >> 24);
                 g += getColorFraction(four >> 16);
                 h += getColorFraction(four >> 8);
-                i += getColorFraction(four);
+                i += getColorFraction(four >> 0);
             }
 
             f /= 4.0F;
