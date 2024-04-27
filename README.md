@@ -1,6 +1,8 @@
 # Legacy-Mipmaps
 Adds Legacy Console Mipmaps to Java Edition!
 
+https://modrinth.com/mod/legacy-mipmaps
+
 # Comparison
 ## BEFORE
 ![BEFORE](https://cdn.modrinth.com/data/cached_images/e89bf801cdeb7b6d0e80422dfff4bf1ca969210d.png)
