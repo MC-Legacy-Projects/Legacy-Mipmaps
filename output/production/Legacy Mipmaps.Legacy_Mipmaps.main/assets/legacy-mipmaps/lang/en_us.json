@@ -1,0 +1,7 @@
+{
+  "text.config.legacy-mipmaps.title": "Legacy Mipmaps Config",
+  "text.config.legacy-mipmaps.option.mipmapType": "Mipmap Type",
+  "text.config.legacy-mipmaps.enum.mipmapChoices.tu5plus": "TU5+",
+  "text.config.legacy-mipmaps.enum.mipmapChoices.tu0totu2": "TU0 to TU2",
+  "text.config.legacy-mipmaps.enum.mipmapChoices.java": "Java"
+}

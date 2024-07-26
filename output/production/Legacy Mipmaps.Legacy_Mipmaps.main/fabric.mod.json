@@ -1,15 +1,16 @@
 {
 	"schemaVersion": 1,
 	"id": "legacy-mipmaps",
-	"version": "${version}",
+	"version": "1.2.0",
 	"name": "Legacy Mipmaps",
-	"description": "Adds back in Legacy Console Mipmaps",
+	"description": "Adds in Legacy Console Mipmaps into Java!",
 	"authors": [
 		"Permdog99"
 	],
 	"contact": {
-		"homepage": "https://modrinth.com/project/legacy-mipmaps",
-		"github": "https://github.com/Permdog99/Legacy-Mipmaps"
+		"homepage": "https://modrinth.com/mod/legacy-mipmaps",
+		"sources": "https://github.com/Permdog99/Legacy-Mipmaps",
+		"issues": "https://github.com/Permdog99/Legacy-Mipmaps/issues"
 	},
 	"license": "GPL-3.0",
 	"icon": "assets/legacy-mipmaps/icon.png",
@@ -26,14 +27,12 @@
 		"fabricloader": ">=0.15.9",
 		"minecraft": ">=1.20.1",
 		"java": ">=17",
-		"fabric-api": "*"
+		"fabric-api": "*",
+		"owo": "*"
 	},
 	"suggests": {
-		"another-mod": "*"
-	},
-	"custom": {
-		"loom:injected_interfaces": {
-			"net/minecraft/class_1011": ["permdog99/legacy_mipmaps/getOpacityInterface"]
-		}
+		"modmenu": "*",
+		"polytone": "*",
+		"legacy": "*"
 	}
 }

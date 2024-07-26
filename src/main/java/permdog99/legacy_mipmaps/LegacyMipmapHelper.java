@@ -1,50 +1,38 @@
-package permdog99.legacy_mipmaps.mixin;
+package permdog99.legacy_mipmaps;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.minecraft.client.texture.MipmapHelper;
 import net.minecraft.client.texture.NativeImage;
 import net.minecraft.util.Util;
-import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
-import org.spongepowered.asm.mixin.Unique;
 
 @Environment(EnvType.CLIENT)
-@Mixin(MipmapHelper.class)
-public class MipmapHelperMixin {
-    @Unique
+public class LegacyMipmapHelper {
     private static final float[] COLOR_FRACTIONS = Util.make(new float[256], (list) -> {
         for(int i = 0; i < list.length; ++i) {
             list[i] = (float)Math.pow((float)i / 255.0F, 2.2);
         }
     });
-
-    /**
-     * @author Permdog99
-     * @reason For legacy console Mipmaps
-     */
-
-    @Overwrite
-    public static NativeImage[] getMipmapLevelsImages(NativeImage[] originals, int mipmap) {
+    public static NativeImage[] getMipmapTU0toTU2(NativeImage[] originals, int mipmap) {
         if (mipmap + 1 <= originals.length) {
             return originals;
         } else {
             NativeImage[] nativeImages = new NativeImage[mipmap + 1];
             nativeImages[0] = originals[0];
             boolean bl = hasAlpha(nativeImages[0]);
-
             for(int i = 1; i <= mipmap; ++i) {
                 if (i < originals.length) {
                     nativeImages[i] = originals[i];
                 } else {
                     NativeImage nativeImage = nativeImages[i - 1];
                     NativeImage nativeImage2 = new NativeImage(nativeImage.getWidth() >> 1, nativeImage.getHeight() >> 1, false);
+
                     int j = nativeImage2.getWidth();
                     int k = nativeImage2.getHeight();
                     for(int l = 0; l < j; ++l) {
                         for(int m = 0; m < k; ++m) {
                             int color = nativeImage.getColor(l * 2 + 1, m * 2 + 1);
-                            nativeImage2.setColor(l, m, color);
+                            int color2 = blend(nativeImage.getColor(l * 2, m * 2), nativeImage.getColor(l * 2 + 1, m * 2), nativeImage.getColor(l * 2, m * 2 + 1), nativeImage.getColor(l * 2, m * 2 + 1), bl);
+                            nativeImage2.setColor(l, m, i == 1 || i == 2 ? color : color2);
                         }
                     }
                     nativeImages[i] = nativeImage2;
@@ -53,7 +41,68 @@ public class MipmapHelperMixin {
             return nativeImages;
         }
     }
-    @Unique
+
+    public static NativeImage[] getMipmapTU5Plus(NativeImage[] originals, int mipmap) {
+        if (mipmap + 1 <= originals.length) {
+            return originals;
+        } else {
+            NativeImage[] nativeImages = new NativeImage[mipmap + 1];
+            nativeImages[0] = originals[0];
+            boolean bl = hasAlpha(nativeImages[0]);
+            for(int i = 1; i <= mipmap; ++i) {
+                if (i < originals.length) {
+                    nativeImages[i] = originals[i];
+                } else {
+                    NativeImage nativeImage = nativeImages[i == 2 ? 0 : i - 1];
+//                    NativeImage nativeImage2 = new NativeImage(nativeImage.getWidth() >> i == 2 ? 2 : 1, nativeImage.getHeight() >> i == 2 ? 2 : 1, false);
+                    NativeImage nativeImage2 = new NativeImage(i == 2 ? (nativeImage.getWidth() >> 2) : (nativeImage.getWidth() >> 1), i == 2 ? (nativeImage.getHeight() >> 2) : (nativeImage.getHeight() >> 1), false);
+
+                    int j = nativeImage2.getWidth();
+                    int k = nativeImage2.getHeight();
+                    for(int l = 0; l < j; ++l) {
+                        for(int m = 0; m < k; ++m) {
+                            int colorMipped1 = nativeImage.getColor(i == 2 ? (l * 4 + 2) : (l * 2 + 1), i == 2 ? (m * 4 + 2) : (m * 2 + 1));
+
+                            int colorMipped3 = blend(nativeImage.getColor(l * 2, m * 2 + 1), nativeImage.getColor(l * 2, m * 2 + 1), nativeImage.getColor(l * 2, m * 2 + 1), nativeImage.getColor(l * 2, m * 2 + 1), bl);
+                            int colorMipped4 = blend(nativeImage.getColor(l * 2, m * 2), nativeImage.getColor(l * 2 + 1, m * 2), nativeImage.getColor(l * 2, m * 2 + 1), nativeImage.getColor(l * 2, m * 2 + 1), bl);
+                            nativeImage2.setColor(l, m, i == 1 ? colorMipped1 : (i == 2 ? colorMipped1 : (i == 3 ? colorMipped3 : colorMipped4)));
+                        }
+                    }
+                    nativeImages[i] = nativeImage2;
+                }
+            }
+            return nativeImages;
+        }
+    }
+
+    public static NativeImage[] getMipmapJava(NativeImage[] originals, int mipmap) {
+        if (mipmap + 1 <= originals.length) {
+            return originals;
+        } else {
+            NativeImage[] nativeImages = new NativeImage[mipmap + 1];
+            nativeImages[0] = originals[0];
+            boolean bl = hasAlpha(nativeImages[0]);
+            for(int i = 1; i <= mipmap; ++i) {
+                if (i < originals.length) {
+                    nativeImages[i] = originals[i];
+                } else {
+                    NativeImage nativeImage = nativeImages[i - 1];
+                    NativeImage nativeImage2 = new NativeImage(nativeImage.getWidth() >> 1, nativeImage.getHeight() >> 1, false);
+
+                    int j = nativeImage2.getWidth();
+                    int k = nativeImage2.getHeight();
+                    for(int l = 0; l < j; ++l) {
+                        for(int m = 0; m < k; ++m) {
+                            nativeImage2.setColor(l, m, blend(nativeImage.getColor(l * 2, m * 2), nativeImage.getColor(l * 2 + 1, m * 2), nativeImage.getColor(l * 2, m * 2 + 1), nativeImage.getColor(l * 2 + 1, m * 2 + 1), bl));
+                        }
+                    }
+                    nativeImages[i] = nativeImage2;
+                }
+            }
+            return nativeImages;
+        }
+    }
+
     private static boolean hasAlpha(NativeImage image) {
         for(int i = 0; i < image.getWidth(); ++i) {
             for(int j = 0; j < image.getHeight(); ++j) {
@@ -64,7 +113,6 @@ public class MipmapHelperMixin {
         }
         return false;
     }
-    @Unique
     private static int blend(int one, int two, int three, int four, boolean checkAlpha) {
         if (checkAlpha) {
             float f = 0.0F;
@@ -120,7 +168,6 @@ public class MipmapHelperMixin {
             return n << 24 | o << 16 | p << 8 | q;
         }
     }
-    @Unique
     private static int getColorComponent(int one, int two, int three, int four, int bits) {
         float f = getColorFraction(one >> bits);
         float g = getColorFraction(two >> bits);
@@ -129,8 +176,8 @@ public class MipmapHelperMixin {
         float j = (float)((double)((float)Math.pow((double)(f + g + h + i) * 0.25, 0.45454545454545453)));
         return (int)((double)j * 255.0);
     }
-    @Unique
     private static float getColorFraction(int value) {
         return COLOR_FRACTIONS[value & 255];
     }
+
 }

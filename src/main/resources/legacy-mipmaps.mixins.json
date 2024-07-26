@@ -2,11 +2,11 @@
   "required": true,
   "package": "permdog99.legacy_mipmaps.mixin",
   "compatibilityLevel": "JAVA_17",
-  "mixins": [
-    "MipmapHelperMixin"
-  ],
+  "mixins": [],
   "injectors": {
     "defaultRequire": 1
   },
-  "client": []
+  "client": [
+    "SpriteContentsMixin"
+  ]
 }
