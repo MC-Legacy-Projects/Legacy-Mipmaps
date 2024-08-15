@@ -1,7 +1,7 @@
 {
 	"schemaVersion": 1,
 	"id": "legacy-mipmaps",
-	"version": "1.2.0",
+	"version": "1.2.2",
 	"name": "Legacy Mipmaps",
 	"description": "Adds in Legacy Console Mipmaps into Java!",
 	"authors": [

@@ -9,10 +9,10 @@ import io.wispforest.owo.config.annotation.RestartRequired;
 public class MipmapOptions {
 
     @RestartRequired
-    public MipmapChoices mipmapType = MipmapChoices.TU5Plus;
+    public MipmapChoices mipmapType = MipmapChoices.TU12Plus;
 
     public enum MipmapChoices {
-        TU5Plus, TU0toTU2, Java
+        TU0toTU2, TU3toTU11, TU12Plus, Java
     }
 
     @Override
