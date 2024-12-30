@@ -12,7 +12,7 @@
 		"sources": "https://github.com/Permdog99/Legacy-Mipmaps",
 		"issues": "https://github.com/Permdog99/Legacy-Mipmaps/issues"
 	},
-	"license": "GPL-3.0",
+	"license": "CC BY-SA 4.0.",
 	"icon": "assets/legacy-mipmaps/icon.png",
 	"environment": "*",
 	"entrypoints": {
