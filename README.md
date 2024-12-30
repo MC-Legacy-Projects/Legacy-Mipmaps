@@ -4,7 +4,7 @@ Adds Legacy Console Mipmaps to Java Edition!
 ![Banner](https://cdn.modrinth.com/data/27fXQT3n/images/b6449c663328fd9968cff063f5ab0f5d5d570a50.png)
 
 ## Comparison
-Here is a comparison of Java's normal mipmapping and Legacy Mipmaps.
+Here is a comparison of Java's normal mipmapping and Legacy Mipmaps
 
 
 <details>
